@@ -6,6 +6,7 @@ from curler.constants import Method
 class ParsedCurl(NamedTuple):
     method: str
     url: str
+    params: dict[str, list[str] | str] = {}
     data: str | None = None
     data_binary: str | None = None
     headers: dict = {}

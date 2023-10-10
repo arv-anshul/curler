@@ -1,9 +1,19 @@
 import re
 from collections import OrderedDict
 from http import cookies as Cookie
+from urllib.parse import parse_qs, urlparse
 
 from curler.cli import get_curl_parsed_args
 from curler.typing import ParsedCurl, http_method
+
+
+def parse_url(url: str) -> dict[str, list[str] | str]:
+    parsed_url = urlparse(url)
+    query_params = parse_qs(
+        parsed_url.query,
+        keep_blank_values=True,
+    )
+    return {k: v[0] if len(v) == 1 else v for k, v in query_params.items()}
 
 
 def parse_cookies_and_header(header: str) -> tuple[OrderedDict, OrderedDict]:
@@ -72,7 +82,8 @@ def curl_command_parser(curl_command: str, *, force_parse: bool = False):
 
     return ParsedCurl(
         method=method,
-        url=parsed.url,
+        url=parsed.url.split("?", 1)[0],
+        params=parse_url(parsed.url),
         data=parsed.data,
         data_binary=parsed.data_binary,
         headers=quoted_headers,
