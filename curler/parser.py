@@ -1,5 +1,4 @@
 import re
-from collections import OrderedDict
 from http import cookies as Cookie
 from urllib.parse import parse_qs, urlparse
 
@@ -16,9 +15,9 @@ def parse_url(url: str) -> dict[str, list[str] | str]:
     return {k: v[0] if len(v) == 1 else v for k, v in query_params.items()}
 
 
-def parse_cookies_and_header(header: str) -> tuple[OrderedDict, OrderedDict]:
-    cookie_dict = OrderedDict()
-    quoted_headers = OrderedDict()
+def parse_cookies_and_header(header: str) -> tuple[dict[str, str], dict[str, str]]:
+    cookie_dict = {}
+    quoted_headers = {}
 
     for curl_header in header:
         if curl_header.startswith(":"):
