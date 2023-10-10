@@ -2,11 +2,15 @@
 
 Import curl command in python and use it with requests, httpx, etc. libraries.
 
-## Installation
+## 🎉 Installation
+
+Install **curler** using `pip` command:
 
 ```sh
 pip install curler
 ```
+
+## 🧩 Usage
 
 ```python
 from curler import curl_command_parser
@@ -39,6 +43,8 @@ ParsedCurl(
 )
 ```
 
-## Acknowledgment
+### 🧪 You can also check [package tests](./tests/) to gain more insights about this package.
+
+## 😎 Acknowledgment
 
 - 🤗 This package is heavily inspired by [@spulec/uncurl](https://github.com/spulec/uncurl).
