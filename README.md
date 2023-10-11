@@ -15,12 +15,9 @@ pip install curler
 ```python
 from curler import curl_command_parser
 
-curl = (
-    "curl "
-    "'https://pypi.python.org/project/arv-easy-analysis' "
-    "-H 'Accept-Encoding:gzip,deflate,sdch' "
-    "-H 'Accept-Language:en-US,en;q=0.8'"
-)
+curl = """curl 'https://pypi.python.org/project/arv-easy-analysis' \
+  -H 'Accept-Encoding:gzip,deflate,sdch' \
+  -H 'Accept-Language:en-US,en;q=0.8'"""
 curl_command_parser(curl)
 ```
 
@@ -28,18 +25,22 @@ curl_command_parser(curl)
 # Output:
 
 ParsedCurl(
-    method='GET',
-    url='https://pypi.python.org/project/arv-easy-analysis',
+    method="GET",
+    url="https://pypi.python.org/project/arv-easy-analysis",
+    params={},
     data=None,
     data_binary=None,
-    headers=OrderedDict([('Accept-Encoding', 'gzip,deflate,sdch'), ('Accept-Language', 'en-US,en;q=0.8')]),
-    cookies=OrderedDict(),
+    headers={
+        "Accept-Encoding": "gzip,deflate,sdch",
+        "Accept-Language": "en-US,en;q=0.8",
+    },
+    cookies={},
     insecure=False,
     user=(),
     proxy={},
     compressed=False,
     include=False,
-    silent=False
+    silent=False,
 )
 ```
 
