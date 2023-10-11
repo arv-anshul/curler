@@ -30,7 +30,7 @@ assert "." in package_version
 
 setup(
     name=__project_name__,
-    version="0.0.1",  # package_version,
+    version=package_version,
     description=(
         "Import curl command in python and use it with requests, httpx, etc. libraries."
     ),
