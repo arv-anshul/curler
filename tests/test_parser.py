@@ -1,5 +1,6 @@
 import unittest
 
+from curler import typing
 from curler.parser import parse_curl
 
 
@@ -7,7 +8,7 @@ class TestCurlParser(unittest.TestCase):
     def test_get_request(self):
         curl_command = "curl http://example.com"
         parsed = parse_curl(curl_command)
-        self.assertEqual(parsed.method, "GET")
+        self.assertEqual(parsed.method, typing.http_method.GET)
 
     def test_post_request(self):
         curl_command = 'curl -X POST -d "data" http://example.com'
@@ -48,6 +49,18 @@ class TestCurlParser(unittest.TestCase):
     def test_not_implemented_method(self):
         curl_command = "curl -X PUT http://example.com"
         self.assertRaises(NotImplementedError, parse_curl, curl_command)
+
+    def test_for_requests_method(self):
+        command = "curl https://example.com"
+        parsed = parse_curl(command).for_requests
+        self.assertIsInstance(parsed, dict)
+        self.assertListEqual(
+            list(parsed.keys()),
+            ["method", "url"],
+            "Check ordering of the list elements.",
+        )
+        self.assertEqual(parsed["url"], "https://example.com")
+        self.assertEqual(parsed["method"], typing.http_method.GET)
 
 
 if __name__ == "__main__":
