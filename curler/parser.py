@@ -57,6 +57,8 @@ def parse_proxy(*, proxy: str, user: str) -> dict[str, str] | str:
 
 
 def parse_curl(command: str, *, force_parse: bool = False):
+    # Clean curl command to be safe
+    command = command.replace("\\", "")
 
     parsed = get_curl_cli_parsed_args(command)
 
