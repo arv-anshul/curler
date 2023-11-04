@@ -38,7 +38,7 @@ class ParsedCurl(t.NamedTuple):
             **{
                 k: v
                 for k, v in self._asdict().items()
-                if k in CurlForRequests.__annotations__.keys()
+                if k in CurlForRequests.__annotations__.keys() and v
             }
         )
 
