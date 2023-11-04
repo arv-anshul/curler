@@ -1,4 +1,6 @@
+import os
 import typing as t
+from pathlib import Path
 
 from curler.constants import Method
 
@@ -20,3 +22,4 @@ class ParsedCurl(t.NamedTuple):
 
 
 http_method = Method()
+PathLike: t.TypeAlias = str | os.PathLike | Path

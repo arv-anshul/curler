@@ -2,6 +2,7 @@ import re
 import urllib.parse
 from http import cookies
 
+from curler import typing
 from curler.cli import get_curl_cli_parsed_args
 from curler.typing import ParsedCurl, http_method
 
@@ -97,3 +98,8 @@ def parse_curl(command: str, *, force_parse: bool = False):
         include=parsed.include,
         silent=parsed.silent,
     )
+
+
+def parse_file(fp: typing.PathLike) -> ParsedCurl:
+    with open(fp) as f:
+        return parse_curl(f.read())
