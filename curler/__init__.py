@@ -1,8 +1,10 @@
 """
+`curler` is a lightweight package to parse curl commands to use them in python.
+
+---
+
 Author: https://github.com/arv-anshul/
-Homepage: https://github.com/arv-anshul/parse-curl/
-E-mali: arv.anshul.1864@gmail.com
+Homepage: https://github.com/arv-anshul/curler/
 """
 
-from curler.cli import get_curl_cli_parsed_args
-from curler.parser import parse_curl
+from curler.parser import parse_curl, parse_file
