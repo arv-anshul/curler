@@ -23,7 +23,7 @@ def _basic_validation_on_command(command: str) -> None:
     ), 'Start with curl command. Like "curl https://example.com/"'
 
 
-def get_curl_parsed_args(command: str) -> argparse.Namespace:
+def get_curl_cli_parsed_args(command: str) -> argparse.Namespace:
     _basic_validation_on_command(command)
     tokens = shlex.split(command)
     parsed = curl_parser.parse_args(tokens)

@@ -1,21 +1,21 @@
 import re
-from http import cookies as Cookie
-from urllib.parse import parse_qs, urlparse
+import urllib.parse
+from http import cookies
 
-from curler.cli import get_curl_parsed_args
+from curler.cli import get_curl_cli_parsed_args
 from curler.typing import ParsedCurl, http_method
 
 
 def parse_url(url: str) -> dict[str, list[str] | str]:
-    parsed_url = urlparse(url)
-    query_params = parse_qs(
+    parsed_url = urllib.parse.urlparse(url)
+    query_params = urllib.parse.parse_qs(
         parsed_url.query,
         keep_blank_values=True,
     )
     return {k: v[0] if len(v) == 1 else v for k, v in query_params.items()}
 
 
-def parse_cookies_and_header(header: str) -> tuple[dict[str, str], dict[str, str]]:
+def parse_cookies_headers(header: str) -> tuple[dict[str, str], dict[str, str]]:
     cookie_dict = {}
     quoted_headers = {}
 
@@ -30,7 +30,7 @@ def parse_cookies_and_header(header: str) -> tuple[dict[str, str], dict[str, str
             header_key, header_value = curl_header.split(":", 1)
 
         if header_key.lower().strip("$") == "cookie":
-            cookie = Cookie.SimpleCookie(
+            cookie = cookies.SimpleCookie(
                 bytes(header_value, "ascii").decode("unicode-escape")
             )
             for key in cookie:
@@ -56,8 +56,9 @@ def parse_proxy(*, proxy: str, user: str) -> dict[str, str] | str:
     return proxies
 
 
-def curl_command_parser(curl_command: str, *, force_parse: bool = False):
-    parsed = get_curl_parsed_args(curl_command)
+def parse_curl(command: str, *, force_parse: bool = False):
+
+    parsed = get_curl_cli_parsed_args(command)
 
     method = parsed.X
     if parsed.data_binary:
@@ -77,7 +78,7 @@ def curl_command_parser(curl_command: str, *, force_parse: bool = False):
         user = tuple(user.split(":"))
 
     proxies = parse_proxy(proxy=parsed.proxy, user=parsed.user)
-    cookie_dict, quoted_headers = parse_cookies_and_header(parsed.header)
+    cookie_dict, quoted_headers = parse_cookies_headers(parsed.header)
 
     return ParsedCurl(
         method=method,

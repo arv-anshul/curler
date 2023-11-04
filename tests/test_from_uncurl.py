@@ -1,6 +1,6 @@
 import unittest
 
-from curler import curl_command_parser
+from curler import parse_curl
 from curler.typing import ParsedCurl
 
 
@@ -10,7 +10,7 @@ class TestCurlCommands(unittest.TestCase):
             --data '[{"evt":"newsletter.show","properties":{"newsletter_type":"userprofile"},"now":1396219192277,"ab":{"welcome_email":{"v":"2","g":2}}}]' \
             -H 'Accept-Encoding: gzip,deflate,sdch' \
             -H 'Cookie: foo=bar; baz=baz2'"""
-        parsed = curl_command_parser(curl_command)
+        parsed = parse_curl(curl_command)
         expected = ParsedCurl(
             method="GET",
             url="https://pypi.org/p/curler",
@@ -25,7 +25,7 @@ class TestCurlCommands(unittest.TestCase):
             --data '{"evt":"newsletter.show","properties":{"newsletter_type":"userprofile"}}' \
             -H 'Accept-Encoding: gzip,deflate,sdch' \
             -H 'Cookie: foo=bar; baz=baz2'"""
-        parsed = curl_command_parser(curl_command)
+        parsed = parse_curl(curl_command)
         self.assertEqual(
             parsed.data,
             r'{"evt":"newsletter.show","properties":{"newsletter_type":"userprofile"}}',
@@ -35,7 +35,7 @@ class TestCurlCommands(unittest.TestCase):
         curl_command = """curl 'https://pypi.org/p/curler' \
             -X 'POST' \
             --data-binary 'this is just some data'"""
-        parsed = curl_command_parser(curl_command)
+        parsed = parse_curl(curl_command)
         self.assertEqual(parsed.data_binary, "this is just some data")
 
     def test_big_command_parsing(self):
@@ -58,7 +58,7 @@ class TestCurlCommands(unittest.TestCase):
             -H 'Host: pandahomeios.ifjing.com' \
             --data-binary '{"CateID":"508","PageIndex":1,"PageSize":30}' \
             --compressed"""
-        parsed = curl_command_parser(curl_command)
+        parsed = parse_curl(curl_command)
         expected = ParsedCurl(
             method="POST",
             url="http://pandahomeios.ifjing.com/action.ashx/otheraction/9028",
@@ -89,13 +89,13 @@ class TestCurlCommands(unittest.TestCase):
         curl_command = """curl 'https://pypi.org/p/curler' \
             -H 'Accept-Encoding: gzip,deflate' \
             --insecure"""
-        parsed = curl_command_parser(curl_command)
+        parsed = parse_curl(curl_command)
         self.assertEqual(parsed.insecure, True)
 
     def test_cookies_with_encoded_character(self):
-        curl_command = r"""curl 'https://pypi.org/p/curler'
+        curl_command = """curl 'https://pypi.org/p/curler'
             -H $'cookie: sid=00Dt00000004XYz\u0021ARg'"""
-        parsed = curl_command_parser(curl_command)
+        parsed = parse_curl(curl_command)
         self.assertEqual(parsed.cookies, {"sid": "00Dt00000004XYz!ARg"})
 
 

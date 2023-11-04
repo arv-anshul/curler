@@ -1,9 +1,9 @@
-from typing import Any, NamedTuple
+import typing as t
 
 from curler.constants import Method
 
 
-class ParsedCurl(NamedTuple):
+class ParsedCurl(t.NamedTuple):
     method: str
     url: str
     params: dict[str, list[str] | str] = {}
@@ -12,7 +12,7 @@ class ParsedCurl(NamedTuple):
     headers: dict = {}
     cookies: dict = {}
     insecure: bool = False
-    user: tuple[str] | Any = ()
+    user: tuple[str] | t.Any = ()
     proxy: dict[str, str] | str = {}
     compressed: bool = False
     include: bool = False
