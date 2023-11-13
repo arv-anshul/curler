@@ -1,7 +1,6 @@
 import unittest
 
-from curler import parse_curl
-from curler.typing import ParsedCurl
+from curler import ParsedCurl, parse_curl
 
 
 class TestCurlCommands(unittest.TestCase):
