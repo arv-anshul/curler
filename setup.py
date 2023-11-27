@@ -1,7 +1,7 @@
 import subprocess
 from pathlib import Path
 
-from setuptools import find_packages, setup
+import setuptools
 
 __project_name__ = "curler"
 __license__ = "MIT"
@@ -28,7 +28,7 @@ assert "-" not in package_version
 assert "." in package_version
 # --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- #
 
-setup(
+setuptools.setup(
     name=__project_name__,
     version=package_version,
     description=(
@@ -40,8 +40,7 @@ setup(
     license=__license__,
     author=__author__,
     author_email=__author_email__,
-    packages=find_packages(),
-    include_package_data=True,
+    py_modules=["curler"],
     classifiers=[
         "License :: OSI Approved :: MIT License",
         "Programming Language :: Python :: 3.9",
