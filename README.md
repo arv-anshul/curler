@@ -4,21 +4,21 @@ Import curl command in python and use it with requests, httpx, etc. libraries.
 
 ## 🎉 Installation
 
-Install **curler** using `pip` command:
+Install **curler** package using `pip` command:
 
 ```sh
-pip install curler
+pip install -U curler
 ```
 
 ## 🧩 Usage
 
 ```python
-from curler import curl_command_parser
+import curler
 
-curl = """curl 'https://pypi.python.org/project/arv-easy-analysis' \
+command = """curl 'https://pypi.python.org/project/arv-easy-analysis' \
   -H 'Accept-Encoding:gzip,deflate,sdch' \
   -H 'Accept-Language:en-US,en;q=0.8'"""
-curl_command_parser(curl)
+curler.parse_curl(command)
 ```
 
 ```python
