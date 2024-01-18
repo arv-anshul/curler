@@ -26,8 +26,6 @@ import typing as t
 import urllib.parse
 from pathlib import Path
 
-PathLike: t.TypeAlias = str | os.PathLike | Path
-
 
 class ParsedCurl(t.NamedTuple):
     """Represents the parsed information from a curl command."""
@@ -144,18 +142,23 @@ def get_proxy(*, proxy: str, user: str) -> dict[str, str] | str:
     return proxies
 
 
-def parse_curl(command: str):
+def parse_curl(
+    command: str,
+    *,
+    filter_func: t.Callable[[str], str] = lambda x: x.replace(" \\\n  ", " "),
+):
     """
     Parses a curl command and returns the corresponding `ParsedCurl` object.
 
     Args:
       command: Input curl command
+      filter_func: Filters the curl command string.
 
     Returns:
       A `ParsedCurl` object representing the parsed information.
     """
     # Clean curl command to be safe
-    command = command.replace("\\", "")
+    command = filter_func(command)
 
     parsed = get_curl_cli_parsed_args(command)
 
@@ -189,7 +192,11 @@ def parse_curl(command: str):
     )
 
 
-def parse_file(fp: PathLike) -> ParsedCurl:
+def parse_file(
+    fp: str | os.PathLike | Path,
+    *,
+    filter_func: t.Callable[[str], str] = lambda x: x.replace(" \\\n  ", " "),
+) -> ParsedCurl:
     """
     Parses a curl command from a file and returns the corresponding `ParsedCurl` object.
 
@@ -200,7 +207,7 @@ def parse_file(fp: PathLike) -> ParsedCurl:
       A `ParsedCurl` object representing the parsed information.
     """
     with open(fp) as f:
-        return parse_curl(f.read())
+        return parse_curl(f.read(), filter_func=filter_func)
 
 
 # --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- #
